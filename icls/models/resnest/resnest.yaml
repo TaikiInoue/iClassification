@@ -1,0 +1,778 @@
+- first_conv: icls.models.resnest.blocks - FirstConv
+  blocks:
+  - conv33_bn_relu_0: icls.blocks - Conv33BnReLU
+    args:
+      in_channels: 3
+      out_channels: 32
+      stride: 2
+  - conv33_bn_relu_1: icls.blocks - Conv33BnReLU
+    args:
+      in_channels: 32
+      out_channels: 32
+  - conv33_bn_relu_2: icls.blocks - Conv33BnReLU
+    args:
+      in_channels: 32
+      out_channels: 64
+  - maxpool: torch.nn - MaxPool2d
+    args:
+      kernel_size: 3
+      stride: 2
+      padding: 1
+      dilation: 1
+      ceil_mode: False
+- residual_block_0: icls.models.resnest.blocks - ResidualBlock
+  blocks:
+  - bottleneck_0: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 64
+        out_channels: 64
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 32
+        out_channels: 128
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 64
+          out_channels: 32
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 32
+          out_channels: 128
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 64
+        out_channels: 256
+    - downsample: icls.blocks - Conv11Bn
+      blocks:
+      - avgpool: torch.nn - AvgPool2d
+        args:
+          kernel_size: 1
+          stride: 1
+          padding: 0
+      - conv11_bn: icls.blocks - Conv11Bn
+        args:
+          in_channels: 64
+          out_channels: 256
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_1: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 256
+        out_channels: 64
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 32
+        out_channels: 128
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 64
+          out_channels: 32
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 32
+          out_channels: 128
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 64
+        out_channels: 256
+    - downsample:
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_2: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 256
+        out_channels: 64
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 32
+        out_channels: 128
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 64
+          out_channels: 32
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 32
+          out_channels: 128
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 64
+        out_channels: 256
+    - downsample:
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+- residual_block_1: icls.models.resnest.blocks - ResidualBlock
+  blocks:
+  - bottleneck_0: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 256
+        out_channels: 128
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 64
+        out_channels: 256
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 128
+          out_channels: 64
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 64
+          out_channels: 256
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool: torch.nn - AvgPool2d
+      args:
+        kernel_size: 3
+        stride: 2
+        padding: 1
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 128
+        out_channels: 512
+    - downsample: icls.blocks - Conv11Bn
+      blocks:
+      - avgpool: torch.nn - AvgPool2d
+        args:
+          kernel_size: 2
+          stride: 2
+          padding: 0
+      - conv11_bn: icls.blocks - Conv11Bn
+        args:
+          in_channels: 256
+          out_channels: 512
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_1: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 512
+        out_channels: 128
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 64
+        out_channels: 256
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 128
+          out_channels: 64
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 64
+          out_channels: 256
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 128
+        out_channels: 512
+    - downsample:
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_2: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 512
+        out_channels: 128
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 64
+        out_channels: 256
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 128
+          out_channels: 64
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 64
+          out_channels: 256
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 128
+        out_channels: 512
+    - downsample:
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_3: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 512
+        out_channels: 128
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 64
+        out_channels: 256
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 128
+          out_channels: 64
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 64
+          out_channels: 256
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 128
+        out_channels: 512
+    - downsample:
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+- residual_block_2: icls.models.resnest.blocks - ResidualBlock
+  blocks:
+  - bottleneck_0: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 512
+        out_channels: 256
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 128
+        out_channels: 512
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 256
+          out_channels: 128
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 128
+          out_channels: 512
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool: torch.nn - AvgPool2d
+      args:
+        kernel_size: 3
+        stride: 2
+        padding: 1
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 1024
+    - downsample: icls.blocks - Conv11Bn
+      blocks:
+      - avgpool: torch.nn - AvgPool2d
+        args:
+          kernel_size: 2
+          stride: 2
+          padding: 0
+      - conv11_bn: icls.blocks - Conv11Bn
+        args:
+          in_channels: 512
+          out_channels: 1024
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_1: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 1024
+        out_channels: 256
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 128
+        out_channels: 512
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 256
+          out_channels: 128
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 128
+          out_channels: 512
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 1024
+    - downsample:
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_2: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 1024
+        out_channels: 256
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 128
+        out_channels: 512
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 256
+          out_channels: 128
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 128
+          out_channels: 512
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 1024
+    - downsample:
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_3: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 1024
+        out_channels: 256
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 128
+        out_channels: 512
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 256
+          out_channels: 128
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 128
+          out_channels: 512
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 1024
+    - downsample:
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_4: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 1024
+        out_channels: 256
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 128
+        out_channels: 512
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 256
+          out_channels: 128
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 128
+          out_channels: 512
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 1024
+    - downsample:
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_5: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 1024
+        out_channels: 256
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 128
+        out_channels: 512
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 256
+          out_channels: 128
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 128
+          out_channels: 512
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 1024
+    - downsample:
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+- residual_block_3: icls.models.resnest.blocks - ResidualBlock
+  blocks:
+  - bottleneck_0: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 1024
+        out_channels: 512
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 256
+        out_channels: 1024
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 512
+          out_channels: 256
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 256
+          out_channels: 1024
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool: torch.nn - AvgPool2d
+      args:
+        kernel_size: 3
+        stride: 2
+        padding: 1
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 512
+        out_channels: 2048
+    - downsample: icls.blocks - Conv11Bn
+      blocks:
+      - avgpool: torch.nn - AvgPool2d
+        args:
+          kernel_size: 2
+          stride: 2
+          padding: 0
+      - conv11_bn: icls.blocks - Conv11Bn
+        args:
+          in_channels: 1024
+          out_channels: 2048
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_1: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 2048
+        out_channels: 512
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 256
+        out_channels: 1024
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 512
+          out_channels: 256
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 256
+          out_channels: 1024
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 512
+        out_channels: 2048
+    - downsample:
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_2: icls.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 2048
+        out_channels: 512
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 256
+        out_channels: 1024
+        groups: 2
+    - split_attention: icls.models.resnest - SplitAttention
+      blocks:
+      - split: icls.blocks - Split
+        args:
+          split_size_or_sections:
+          dim: 1
+      - avgpool: torch.nn - AdaptiveAvgPool2d
+        args:
+          output_size: 1
+      - conv11_bn_relu: icls.blocks - Conv11BnReLU
+        args:
+          in_channels: 512
+          out_channels: 256
+          bias: True
+      - conv11: icls.blocks - Conv11
+        args:
+          in_channels: 256
+          out_channels: 1024
+          bias: True
+      - radix_softmax: icls.blocks - RadixSoftmax
+        args:
+          radix: 2
+          cardinality: 1
+    - avgpool:
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 512
+        out_channels: 2048
+    - downsample:
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+- avgpool: torch.nn - AdaptiveAvgPool2d
+  args:
+    output_size: 1
+- fc: torch.nn - Linear
+  args:
+    in_features: 2048
+    out_features: 1000
+    bias: True

@@ -1,0 +1,326 @@
+- first_conv: icls.models.resnet.blocks - FirstConv
+  blocks:
+  - conv_bn_relu: icls.blocks - ConvBnReLU
+    args:
+      in_channels: 3
+      out_channels: 64
+      kernel_size: 7
+      stride: 2
+      padding: 3
+  - maxpool: torch.nn - MaxPool2d
+    args:
+      kernel_size: 3
+      stride: 2
+      padding: 1
+      dilation: 1
+      ceil_mode: False
+- res_0: icls.models.resnet.blocks - Res
+  blocks:
+  - bottleneck_0: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 64
+        out_channels: 64
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 64
+        out_channels: 64
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 64
+        out_channels: 256
+    - downsample: icls.blocks - Conv11Bn
+      args:
+        in_channels: 64
+        out_channels: 256
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_1: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 256
+        out_channels: 64
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 64
+        out_channels: 64
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 64
+        out_channels: 256
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_2: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 256
+        out_channels: 64
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 64
+        out_channels: 64
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 64
+        out_channels: 256
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+- res_1: icls.models.resnet.blocks - Res
+  blocks:
+  - bottleneck_0: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 256
+        out_channels: 128
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 128
+        out_channels: 128
+        stride: 2
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 128
+        out_channels: 512
+    - downsample: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 512
+        stride: 2
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_1: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 512
+        out_channels: 128
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 128
+        out_channels: 128
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 128
+        out_channels: 512
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_2: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 512
+        out_channels: 128
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 128
+        out_channels: 128
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 128
+        out_channels: 512
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_3: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 512
+        out_channels: 128
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 128
+        out_channels: 128
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 128
+        out_channels: 512
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+- res_2: icls.models.resnet.blocks - Res
+  blocks:
+  - bottleneck_0: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 512
+        out_channels: 256
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 256
+        out_channels: 256
+        stride: 2
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 1024
+    - downsample: icls.blocks - Conv11Bn
+      args:
+        in_channels: 512
+        out_channels: 1024
+        stride: 2
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_1: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 1024
+        out_channels: 256
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 256
+        out_channels: 256
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 1024
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_2: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 1024
+        out_channels: 256
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 256
+        out_channels: 256
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 1024
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_3: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 1024
+        out_channels: 256
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 256
+        out_channels: 256
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 1024
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_4: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 1024
+        out_channels: 256
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 256
+        out_channels: 256
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 1024
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_5: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 1024
+        out_channels: 256
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 256
+        out_channels: 256
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 256
+        out_channels: 1024
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+- res_3: icls.models.resnet.blocks - Res
+  blocks:
+  - bottleneck_0: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 1024
+        out_channels: 512
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 512
+        out_channels: 512
+        stride: 2
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 512
+        out_channels: 2048
+    - downsample: icls.blocks - Conv11Bn
+      args:
+        in_channels: 1024
+        out_channels: 2048
+        stride: 2
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_1: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 2048
+        out_channels: 512
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 512
+        out_channels: 512
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 512
+        out_channels: 2048
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+  - bottleneck_2: icls.models.resnet.blocks - Bottleneck
+    blocks:
+    - conv11_bn_relu: icls.blocks - Conv11BnReLU
+      args:
+        in_channels: 2048
+        out_channels: 512
+    - conv33_bn_relu: icls.blocks - Conv33BnReLU
+      args:
+        in_channels: 512
+        out_channels: 512
+    - conv11_bn: icls.blocks - Conv11Bn
+      args:
+        in_channels: 512
+        out_channels: 2048
+    - relu: torch.nn - ReLU
+      args:
+        inplace: True
+- avgpool: torch.nn - AdaptiveAvgPool2d
+  args:
+    output_size: 1
+- fc: torch.nn - Linear
+  args:
+    in_features: 2048
+    out_features: 1000
+    bias: True

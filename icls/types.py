@@ -15,6 +15,6 @@ Logger = TypeVar("logging.Logger")
 ListConfig = TypeVar("omegaconf.listconfig.ListConfig")
 Array = TypeVar("numpy.ndarray")
 Scaler = TypeVar("torch.cuda.amp.grad_scaler.GradScaler")
-LRScheduler = TypeVar("torch.optim.lr_scheduler._LRScheduler")
+Scheduler = TypeVar("torch.optim.lr_scheduler._LRScheduler")
 
 __all__ = ["Any", "Dict", "List", "Tuple", "TypeVar"]

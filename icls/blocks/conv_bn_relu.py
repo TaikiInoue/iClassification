@@ -42,8 +42,8 @@ class ConvBnReLU(nn.Module):
                 num_features=out_channels,
                 eps=eps,
                 momentum=momentum,
-                affine=True,
-                track_running_stats=True,
+                affine=affine,
+                track_running_stats=track_running_stats,
             ),
             nn.ReLU(inplace=inplace),
         )

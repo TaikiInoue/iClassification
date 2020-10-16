@@ -13,7 +13,7 @@ class Conv33Bn(nn.Module):
         padding: int = 1,
         dilation: int = 1,
         groups: int = 1,
-        bias: bool = True,
+        bias: bool = False,
         padding_mode: str = "zeros",
         # nn.BatchNorm2d
         eps: float = 1e-05,
@@ -40,8 +40,8 @@ class Conv33Bn(nn.Module):
                 num_features=out_channels,
                 eps=eps,
                 momentum=momentum,
-                affine=True,
-                track_running_stats=True,
+                affine=affine,
+                track_running_stats=track_running_stats,
             ),
         )
 

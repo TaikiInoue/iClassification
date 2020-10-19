@@ -11,7 +11,7 @@ class ImagenetDataset(Dataset):
         self.prefix = Path(prefix)
         self.augs = augs
 
-        with open("data/imagenet/meta/val.txt") as f:
+        with open(self.prefix / "val.txt", "r") as f:
             lines = f.readlines()
 
         self.filename_list = []
@@ -26,7 +26,7 @@ class ImagenetDataset(Dataset):
         filename = self.filename_list[idx]
         label = self.label_list[idx]
 
-        img = cv2.imread(self.prefix / filename)
+        img = cv2.imread(str(self.prefix / filename))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
         data_dict = self.augs(image=img)

@@ -1,4 +1,21 @@
+device: cuda:0
+
 model:
-  name:
+  name: icls.models - ResNet50
   args:
-    pretrained:
+    pretrained: True
+
+augs:
+  yaml: /dgx/github/iClassification/icls/yamls/augs/inference.yaml
+
+dataset:
+  name: icls.datasets - ImagenetDataset
+  args:
+    prefix: /dgx/github/iClassification/data/imagenet/val
+
+dataloader:
+  name: torch.utils.data - DataLoader
+  args:
+    batch_size: 4
+    num_workers: 4
+    shuffle: True

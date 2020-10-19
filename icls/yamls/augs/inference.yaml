@@ -11,7 +11,7 @@ transform:
     height: 256
     interpolation: 1
     p: 1
-    width: -1
+    width: 256
   - __class_fullname__: albumentations.augmentations.transforms.CenterCrop
     always_apply: false
     height: 224

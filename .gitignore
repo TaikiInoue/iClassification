@@ -1,7 +1,11 @@
 # Additional
 *.onnx
-sandbox.py
-sandbox.ipynb
+*.JPEG
+*.pth
+*.txt
+sandbox*
+outputs/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

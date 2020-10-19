@@ -1,21 +1,22 @@
 import os
+from typing import Dict, Tuple
 
-import icls.types as T
 import torch
-import torch.nn as nn
+from torch.nn import Module
 from icls.models import Builder
 from omegaconf import OmegaConf
+from torch import Tensor
 
 
-class ResNet(nn.Module, Builder):
+class ResNet(Module, Builder):
 
-    first_conv: T.Module
-    res_0: T.Module
-    res_1: T.Module
-    res_2: T.Module
-    res_3: T.Module
-    avgpool: T.Module
-    fc: T.Module
+    first_conv: Module
+    res_0: Module
+    res_1: Module
+    res_2: Module
+    res_3: Module
+    avgpool: Module
+    fc: Module
 
     def __init__(self, cfg_path: str) -> None:
 
@@ -35,9 +36,9 @@ class ResNet(nn.Module, Builder):
 
         super(ResNet, self).__init__()
         cfg = OmegaConf.load(cfg_path)
-        self.build_blocks(cfg)
+        self.build_blocks_from_cfg(cfg)
 
-    def forward(self, x: T.Tensor) -> T.Tuple[T.Dict[str, T.Tensor], T.Tensor]:
+    def forward(self, x: Tensor) -> Tuple[Dict[str, Tensor], Tensor]:
 
         x = self.first_conv(x)
         x_res_0 = self.res_0(x)

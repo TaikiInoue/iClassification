@@ -1,12 +1,12 @@
 from pathlib import Path
 
 import cv2
-import icls.types as T
+from icls.albu import Compose
 from torch.utils.data import Dataset
 
 
 class ImagenetDataset(Dataset):
-    def __init__(self, prefix: str, augs: T.Compose) -> None:
+    def __init__(self, prefix: str, augs: Compose) -> None:
 
         self.prefix = Path(prefix)
         self.augs = augs

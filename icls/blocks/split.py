@@ -1,9 +1,9 @@
-import icls.types as T
 import torch
-import torch.nn as nn
+from torch.nn import Module
+from torch import Tensor
 
 
-class Split(nn.Module):
+class Split(Module):
     def __init__(
         self,
         channels: int = None,
@@ -17,7 +17,7 @@ class Split(nn.Module):
         self.num_chunks = num_chunks
         self.dim = dim
 
-    def forward(self, x: T.Tensor) -> T.Tensor:
+    def forward(self, x: Tensor) -> Tensor:
 
         split_size_or_sections = self.channels // self.num_chunks
         x = torch.split(x, split_size_or_sections, self.dim)

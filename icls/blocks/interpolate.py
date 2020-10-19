@@ -1,9 +1,9 @@
-import icls.types as T
-import torch.nn as nn
+from torch.nn import Module
 import torch.nn.functional as F
+from torch import Tensor
 
 
-class Interpolate(nn.Module):
+class Interpolate(Module):
     def __init__(
         self,
         size: int = None,
@@ -21,7 +21,7 @@ class Interpolate(nn.Module):
         self.align_corners = align_corners
         self.recompute_scale_factor = recompute_scale_factor
 
-    def forward(self, x: T.Tensor) -> T.Tensor:
+    def forward(self, x: Tensor) -> Tensor:
 
         x = F.interpolate(
             x,

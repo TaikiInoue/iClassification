@@ -1,22 +1,23 @@
-import icls.types as T
-import torch.nn as nn
+from torch.nn import Module
 from icls.models import Builder
+from omegaconf import ListConfig
+from torch import Tensor
 
 
-class Bottleneck(nn.Module, Builder):
+class Bottleneck(Module, Builder):
 
-    conv11_bn_relu: T.Module
-    conv33_bn_relu: T.Module
-    conv11_bn: T.Module
-    avgpool: T.Module
-    downsample: T.Module
-    relu: T.Module
+    conv11_bn_relu: Module
+    conv33_bn_relu: Module
+    conv11_bn: Module
+    avgpool: Module
+    downsample: Module
+    relu: Module
 
-    def __init__(self, object_cfg: T.ListConfig) -> None:
+    def __init__(self, cfg: ListConfig) -> None:
 
         """
         Args:
-            object_cfg (T.ListConfig):
+            cfg (ListConfig):
                 - conv11_bn_relu: icls.blocks - Conv11BnReLU
                 - conv33_bn_relu: icls.blocks - Conv33BnReLU
                 - conv11_bn: icls.blocks - Conv11Bn
@@ -25,9 +26,9 @@ class Bottleneck(nn.Module, Builder):
         """
 
         super(Bottleneck, self).__init__()
-        self.build_blocks(object_cfg)
+        self.build_blocks_from_cfg(cfg)
 
-    def forward(self, x: T.Tensor) -> T.Tensor:
+    def forward(self, x: Tensor) -> Tensor:
 
         residual = x
         out = self.conv11_bn_relu(x)

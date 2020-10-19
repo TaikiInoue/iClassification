@@ -1,26 +1,27 @@
-import icls.types as T
-import torch.nn as nn
+from torch.nn import Module
 from icls.models import Builder
+from omegaconf import ListConfig
+from torch import Tensor
 
 
-class Downsample(nn.Module, Builder):
+class Downsample(Module, Builder):
 
-    avgpool: T.Module
-    conv11_bn_relu: T.Module
+    avgpool: Module
+    conv11_bn_relu: Module
 
-    def __init__(self, object_cfg: T.ListConfig) -> None:
+    def __init__(self, cfg: ListConfig) -> None:
 
         """
         Args:
-            object_cfg (T.ListConfig):
+            cfg (ListConfig):
                 - avgpool: torch.nn - AvgPool2d
                 - conv11_bn_relu: icls.blocks - Conv11BnReLU
         """
 
-        super(Downsample, self).__init__()
-        self.build_blocks(object_cfg)
+        super().__init__()
+        self.build_blocks_from_cfg(cfg)
 
-    def forward(self, x: T.Tensor) -> T.Tensor:
+    def forward(self, x: Tensor) -> Tensor:
 
         x = self.avgpool(x)
         x = self.conv11_bn_relu(x)

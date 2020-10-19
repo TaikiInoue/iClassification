@@ -1,20 +1,20 @@
+from abc import ABC
 from importlib import import_module
 
-import icls.types as T
 from omegaconf.dictconfig import DictConfig
 from omegaconf.listconfig import ListConfig
 
 
-class Builder:
-    def build_blocks(self, object_cfg: T.ListConfig) -> None:
+class Builder(ABC):
+    def build_blocks_from_cfg(self, cfg: ListConfig) -> None:
 
         """
         Build blocks composing the object.
         Args:
-            object_cfg (T.ListConfig): The list of blocks
+            cfg (ListConfig): The list of block configs
         """
 
-        for block_cfg in object_cfg:
+        for block_cfg in cfg:
 
             var_name, cls_fullname = block_cfg.popitem()
             _, block_cfg = block_cfg.popitem()

@@ -1,21 +1,22 @@
-import icls.types as T
-import torch.nn as nn
+from torch.nn import Module
 from icls.models import Builder
+from omegaconf import ListConfig
+from torch import Tensor
 
 
-class ResidualBlock(nn.Module, Builder):
-    def __init__(self, object_cfg: T.ListConfig) -> None:
+class ResidualBlock(Module, Builder):
+    def __init__(self, cfg: ListConfig) -> None:
 
         """
         Args:
-            object_cfg (T.ListConfig):
+            cfg (ListConfig):
                 - bottleneck_*: icls.models.resnet.blocks - Bottleneck
         """
 
         super(ResidualBlock, self).__init__()
-        self.build_blocks(object_cfg)
+        self.build_blocks_from_cfg(cfg)
 
-    def forward(self, x: T.Tensor) -> T.Tensor:
+    def forward(self, x: Tensor) -> Tensor:
 
         i = 0
         while True:

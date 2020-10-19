@@ -1,15 +1,15 @@
 import logging
 
-import iseg.types as T
 from icls.runner.initialize import RunnerInitialize
 from icls.runner.train_val_test import RunnerTrainValTest
+from omegaconf import DictConfig
 
 
 class Runner(
     RunnerInitialize,
     RunnerTrainValTest,
 ):
-    def __init__(self, cfg: T.DictConfig):
+    def __init__(self, cfg: DictConfig) -> None:
         super().__init__()
 
         self.cfg = cfg
@@ -18,7 +18,7 @@ class Runner(
         self.augs_dict = {}
         self.dataset_dict = {}
         self.dataloader_dict = {}
-        for data_type in ["train", "val", "test"]:
+        for data_type in ["val"]:
             self.augs_dict[data_type] = self.init_augs(data_type)
             self.dataset_dict[data_type] = self.init_dataset(data_type)
             self.dataloader_dict[data_type] = self.init_dataloader(data_type)

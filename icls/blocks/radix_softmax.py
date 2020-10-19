@@ -1,9 +1,9 @@
-import icls.types as T
-import torch.nn as nn
+from torch.nn import Module
 import torch.nn.functional as F
+from torch import Tensor
 
 
-class RadixSoftmax(nn.Module):
+class RadixSoftmax(Module):
     def __init__(
         self,
         radix: int = None,
@@ -15,7 +15,7 @@ class RadixSoftmax(nn.Module):
         self.radix = radix
         self.cardinality = cardinality
 
-    def forward(self, x: T.Tensor) -> T.Tensor:
+    def forward(self, x: Tensor) -> Tensor:
 
         batch, channel, height, width = x.shape
         x = x.view(batch, self.cardinality, self.radix, -1)

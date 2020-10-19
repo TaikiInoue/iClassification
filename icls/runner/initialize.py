@@ -1,14 +1,18 @@
 from importlib import import_module
 
 import icls.albu as albu
-import icls.types as T
+from icls.albu import Compose
+from omegaconf import DictConfig
+from torch.nn import Module
+from torch.optim import Optimizer
+from torch.utils.data import DataLoader, Dataset
 
 
 class RunnerInitialize:
 
-    cfg: T.DictConfig
+    cfg: DictConfig
 
-    def init_augs(self, data_type: str) -> T.Compose:
+    def init_augs(self, data_type: str) -> Compose:
 
         augs = albu.load(self.cfg.augs[data_type].yaml, data_format="yaml")
 
@@ -22,31 +26,31 @@ class RunnerInitialize:
 
         return augs
 
-    def init_criterion(self) -> T.Loss:
+    def init_criterion(self) -> Module:
 
         return self._init(self.cfg.criterion)
 
-    def init_dataloader(self, data_type: str) -> T.DataLoader:
+    def init_dataloader(self, data_type: str) -> DataLoader:
 
         return self._init(self.cfg.dataloder[data_type])
 
-    def init_dataset(self, data_type: str) -> T.Dataset:
+    def init_dataset(self, data_type: str) -> Dataset:
 
         return self._init(self.cfg.dataset[data_type])
 
-    def init_model(self) -> T.Module:
+    def init_model(self) -> Module:
 
         return self._init(self.cfg.model)
 
-    def init_optimizer(self) -> T.Optimizer:
+    def init_optimizer(self) -> Optimizer:
 
         return self._init(self.cfg.optimizer)
 
-    def init_scheduler(self) -> T.Scheduler:
+    def init_scheduler(self):
 
         return self._init(self.cfg.scheduler)
 
-    def _init(self, cfg: T.DictConfig):
+    def _init(self, cfg: DictConfig):
 
         fullname = cfg.name
         module_path, attr_name = fullname.split(" - ")

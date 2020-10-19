@@ -1,23 +1,24 @@
 from operator import mul
 
-import icls.types as T
-import torch.nn as nn
+from torch.nn import Module
 from icls.models import Builder
+from omegaconf import ListConfig
+from torch import Tensor
 
 
-class SplitAttention(nn.Module, Builder):
+class SplitAttention(Module, Builder):
 
-    split: T.Module
-    avgpool: T.Module
-    conv11_bn_relu: T.Module
-    conv11: T.Module
-    radix_softmax: T.Module
+    split: Module
+    avgpool: Module
+    conv11_bn_relu: Module
+    conv11: Module
+    radix_softmax: Module
 
-    def __init__(self, object_cfg: T.ListConfig) -> None:
+    def __init__(self, cfg: ListConfig) -> None:
 
         """
         Args:
-            object_cfg (T.ListConfig):
+            cfg (ListConfig):
                 - split: icls.blocks - Split
                 - avgpool: torch.nn - AdaptiveAvgPool2d
                 - conv11_bn_relu: icls.blocks - Conv11BnReLU
@@ -26,9 +27,9 @@ class SplitAttention(nn.Module, Builder):
         """
 
         super(SplitAttention, self).__init__()
-        self.build_blocks(object_cfg)
+        self.build_blocks_from_cfg(cfg)
 
-    def forward(self, x: T.Tensor) -> T.Tensor:
+    def forward(self, x: Tensor) -> Tensor:
 
         batches, channels, height, width = x.shape
         self.split.channels = channels

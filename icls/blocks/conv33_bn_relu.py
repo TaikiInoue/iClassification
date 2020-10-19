@@ -1,8 +1,9 @@
-import icls.types as T
 import torch.nn as nn
+from torch import Tensor
+from torch.nn import Module
 
 
-class Conv33BnReLU(nn.Module):
+class Conv33BnReLU(Module):
     def __init__(
         self,
         # nn.Conv2d
@@ -48,6 +49,6 @@ class Conv33BnReLU(nn.Module):
             nn.ReLU(inplace=inplace),
         )
 
-    def forward(self, x: T.Tensor) -> T.Tensor:
+    def forward(self, x: Tensor) -> Tensor:
 
         return self.conv33_bn_relu(x)

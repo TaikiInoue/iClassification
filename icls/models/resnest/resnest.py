@@ -1,27 +1,27 @@
-import icls.types as T
-import onnx
+from typing import Dict, Tuple
+
 import torch
-import torch.nn as nn
-import torchvision
+from torch.nn import Module
 from icls.models import Builder
-from omegaconf import OmegaConf
+from omegaconf import ListConfig
+from torch import Tensor
 
 
-class ResNeSt50(nn.Module, Builder):
+class ResNeSt50(Module, Builder):
 
-    first_conv: T.Module
-    residual_block_0: T.Module
-    residual_block_1: T.Module
-    residual_block_2: T.Module
-    residual_block_3: T.Module
-    avgpool: T.Module
-    fc: T.Module
+    first_conv: Module
+    residual_block_0: Module
+    residual_block_1: Module
+    residual_block_2: Module
+    residual_block_3: Module
+    avgpool: Module
+    fc: Module
 
-    def __init__(self, object_cfg: T.ListConfig) -> None:
+    def __init__(self, cfg: ListConfig) -> None:
 
         """
         Args:
-            object_cfg (T.ListConfig):
+            cfg (ListConfig):
                 - first_conv: icls.backbone.resnet.blocks - FirstConv
                 - residual_block_0: icls.backbone.resnet.blocks - ResidualBlock
                 - residual_block_1: icls.backbone.resnet.blocks - ResidualBlock
@@ -32,9 +32,9 @@ class ResNeSt50(nn.Module, Builder):
         """
 
         super(ResNeSt50, self).__init__()
-        self.build_blocks(object_cfg)
+        self.build_blocks_from_cfg(cfg)
 
-    def forward(self, x: T.Tensor) -> T.Tuple[T.Dict[str, T.Tensor], T.Tensor]:
+    def forward(self, x: Tensor) -> Tuple[Dict[str, Tensor], Tensor]:
 
         x = self.first_conv(x)
         x_0 = self.residual_block_0(x)
@@ -45,16 +45,5 @@ class ResNeSt50(nn.Module, Builder):
         y = torch.flatten(y, start_dim=1)
         y = self.fc(y)
 
-        feature_dict = {"res_0": x_0, "res_1": x_1, "res_2": x_2, "res_3": x_res_3}
+        feature_dict = {"res_0": x_0, "res_1": x_1, "res_2": x_2, "res_3": x_3}
         return (feature_dict, y)
-
-
-if __name__ == "__main__":
-
-    x = torch.randn(8, 3, 128, 128)
-
-    cfg = OmegaConf.load("/dgx/github/iClassification/icls/models/resnet/resnet50.yaml")
-    model = ResNet50(cfg)
-    filename = "resnet50.onnx"
-    torch.onnx.export(model, x, filename, export_params=True, opset_version=8)
-    onnx.save(onnx.shape_inference.infer_shapes(onnx.load(filename)), filename)

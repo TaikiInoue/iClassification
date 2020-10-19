@@ -1,8 +1,9 @@
-import icls.types as T
 import torch.nn as nn
+from torch import Tensor
+from torch.nn import Module
 
 
-class Conv11Bn(nn.Module):
+class Conv11Bn(Module):
     def __init__(
         self,
         # nn.Conv2d
@@ -45,6 +46,6 @@ class Conv11Bn(nn.Module):
             ),
         )
 
-    def forward(self, x: T.Tensor) -> T.Tensor:
+    def forward(self, x: Tensor) -> Tensor:
 
         return self.conv11_bn(x)

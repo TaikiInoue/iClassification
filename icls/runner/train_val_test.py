@@ -1,18 +1,24 @@
-import icls.types as T
+from logging import Logger
+from typing import Dict
+
 import torch
+from omegaconf import DictConfig
+from torch.nn import Module
+from torch.optim import Optimizer
+from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 
 class RunnerTrainValTest:
 
-    cfg: T.DictConfig
-    criterion: T.Loss
-    dataloader_dict: T.Dict[str, T.DataLoader]
-    log: T.Logger
-    model: T.Module
-    optimizer: T.Optimizer
+    cfg: DictConfig
+    criterion: Module
+    dataloader_dict: Dict[str, DataLoader]
+    log: Logger
+    model: Module
+    optimizer: Optimizer
 
-    def train(self):
+    def train(self) -> None:
 
         self.model.train()
         pbar = tqdm(range(1, self.cfg.run.train.epochs + 1), desc="train")
@@ -41,10 +47,18 @@ class RunnerTrainValTest:
 
         torch.save(self.model.state_dict(), f"{self.cfg.model.name}.pth")
 
-    def val(self):
-        pass
+    def val(self) -> None:
 
-    def test(self):
+        self.model.eval()
+        pbar = tqdm(self.dataloader_dict["val"], desc="val")
+        for i, data_dict in enumerate(pbar):
+
+            img = data_dict["image"].to(self.cfg.device)
+            label = data_dict["label"]
+            pred = self.model(img)
+            pred = pred.argmax(dim)
+
+    def test(self) -> None:
 
         self.model.eval()
         pbar = tqdm(self.dataloader_dict["test"], desc="test")

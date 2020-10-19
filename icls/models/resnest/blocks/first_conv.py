@@ -1,20 +1,21 @@
-import icls.types as T
-import torch.nn as nn
+from torch.nn import Module
 from icls.models import Builder
+from omegaconf import ListConfig
+from torch import Tensor
 
 
-class FirstConv(nn.Module, Builder):
+class FirstConv(Module, Builder):
 
-    conv33_bn_relu_0: T.Module
-    conv33_bn_relu_1: T.Module
-    conv33_bn_relu_2: T.Module
-    maxpool: T.Module
+    conv33_bn_relu_0: Module
+    conv33_bn_relu_1: Module
+    conv33_bn_relu_2: Module
+    maxpool: Module
 
-    def __init__(self, object_cfg: T.ListConfig) -> None:
+    def __init__(self, cfg: ListConfig) -> None:
 
         """
         Args:
-            object_cfg (T.ListConfig):
+            cfg (ListConfig):
                 - conv33_bn_relu_0: icls.blocks - Conv33BnReLU
                 - conv33_bn_relu_1: icls.blocks - Conv33BnReLU
                 - conv33_bn_relu_2: icls.blocks - Conv33BnReLU
@@ -22,9 +23,9 @@ class FirstConv(nn.Module, Builder):
         """
 
         super(FirstConv, self).__init__()
-        self.build_blocks(object_cfg)
+        self.build_blocks_from_cfg(cfg)
 
-    def forward(self, x: T.Tensor) -> T.Tensor:
+    def forward(self, x: Tensor) -> Tensor:
 
         x = self.conv33_bn_relu_0(x)
         x = self.conv33_bn_relu_1(x)
